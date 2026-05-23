@@ -43,12 +43,32 @@
     </p>
     <p><strong>Camera (Face Distance Tracking)</strong></p>
     <p>
-      Deskly uses your device's front-facing camera together with Apple's
-      ARKit to estimate the distance between your face and the screen. This
-      measurement is used solely to detect poor desk posture (for example,
-      slouching closer to the screen) and to deliver real-time feedback.
+      Deskly uses your device's front-facing camera (the TrueDepth camera on
+      supported iPhones) together with Apple's ARKit
+      (<code>ARFaceTrackingConfiguration</code>) to estimate the distance
+      between your face and the screen. This measurement is used solely to
+      detect poor desk posture (for example, slouching closer to the screen)
+      and to deliver real-time feedback.
     </p>
     <ul>
+      <li>
+        <strong>Only one number is used.</strong> From ARKit's
+        <code>ARFaceAnchor.transform</code> we read only the 3D translation
+        (the position of the face relative to the camera) and compute a
+        single scalar &mdash; the distance, in millimeters, between the front
+        camera and your face. We never read
+        <code>ARFaceAnchor.geometry</code> (face mesh or vertices) or
+        <code>blendShapes</code> (expression coefficients), and no images or
+        video frames are ever accessed beyond ARKit's internal pipeline.
+      </li>
+      <li>
+        <strong>Nothing is retained.</strong> The computed distance exists
+        only in device memory while a posture session is active and is
+        discarded as soon as the session ends. The only related value that
+        is persisted is your calibrated baseline &mdash; a single number in
+        millimeters &mdash; stored locally on the device and removed when
+        you uninstall the app.
+      </li>
       <li>
         <strong>Video is never recorded.</strong> The camera feed is processed
         in memory only, and no frames or images are saved to your device.
@@ -180,7 +200,7 @@
       to review this page periodically for any changes. We will notify you of
       any changes by posting the new Privacy Policy on this page.
     </p>
-    <p>This policy is effective as of 2026-05-22</p>
+    <p>This policy is effective as of 2026-05-23</p>
     <p><strong>Contact Us</strong></p>
     <p>
       If you have any questions or suggestions about our Privacy Policy, do not
